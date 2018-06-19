@@ -7,6 +7,9 @@ spring:
         mongodb:
             host: localhost
             port: 27017
-            database: implanttracker
-            username: implanttracker
-            password: implanttracker
+            database: stockgameserver
+            username: stockgameserver
+            password: stockgameserver
+
+server:
+    port: 8080

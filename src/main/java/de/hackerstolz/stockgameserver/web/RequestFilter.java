@@ -51,7 +51,7 @@ public class RequestFilter implements Filter {
             res.setStatus(400);
             return;
         }
-        final String userId = split[2];
+        final String userId = split[3];
         final Account account = accountService.getAccount(userId);
         if (null == account) {
             res.setStatus(404);
