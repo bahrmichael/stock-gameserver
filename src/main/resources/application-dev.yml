@@ -1,0 +1,12 @@
+spring:
+    profiles:
+        active: dev
+    jackson:
+        serialization.indent_output: true
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            database: implanttracker
+            username: implanttracker
+            password: implanttracker
