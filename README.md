@@ -31,6 +31,8 @@ Example:
 
 Create an account with the given name and an initial balance of 10000. Please use your real name. Names are not unique, so you can create as many accounts as you want.
 
+No request body.
+
 Returns the userId and a secret that you must remember for further calls. You have to start over if you lose them.
 
 Example:
@@ -41,7 +43,6 @@ Example:
     "name": "Ryan Reynolds"
 }
 ```
-
 
 ### GET /api/balance/{userId}
 
@@ -134,6 +135,8 @@ Repeated calls will try to place multiple orders.
 Error messages are provided in the body.
 
 `400`: Insufficient Funds. You don't have the required <amount>
+
 `400`: Insufficient Shares. For the given symbol you only have <amount> shares.
+
 `404`: The symbol <symbol> could not be found. If it's not a typo, then please report this to the admin.
 
