@@ -33,29 +33,33 @@ public class RequestFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
+        boolean deny = false;
         final String servletPath = req.getServletPath();
         if (servletPath.startsWith("/api")
             && !servletPath.startsWith("/api/isalive")
             && !servletPath.startsWith("/api/quote")
             && !servletPath.startsWith("/api/account")) {
-            doFilter(req, res, servletPath);
+
+            deny = shouldDeny(req, res, servletPath);
         }
 
-        chain.doFilter(request, response);
+        if (!deny) {
+            chain.doFilter(request, response);
+        }
     }
 
-    private void doFilter(final HttpServletRequest req, final HttpServletResponse res, final String servletPath) {
+    private boolean shouldDeny(final HttpServletRequest req, final HttpServletResponse res, final String servletPath) {
         // do filter
         final String[] split = servletPath.split("/");
-        if (split.length < 3) {
-            res.setStatus(400);
-            return;
+        if (split.length < 4) {
+            res.setStatus(404);
+            return true;
         }
         final String userId = split[3];
         final Account account = accountService.getAccount(userId);
         if (null == account) {
             res.setStatus(404);
-            return;
+            return true;
         }
 
         final String expectedSecret = account.getSecret();
@@ -64,7 +68,9 @@ public class RequestFilter implements Filter {
 
         if (!expectedSecret.equals(actualSecret)) {
             res.setStatus(401);
+            return true;
         }
+        return false;
     }
 
     @Override
