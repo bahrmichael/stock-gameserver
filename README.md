@@ -41,7 +41,7 @@ Example:
 ```json
 {
     "userId": "97asndyf9-sa90d7fnsad",
-    "secert": "as9-8dn8g08basnfd-asgdfsdfihsdf",
+    "secret": "as9-8dn8g08basnfd-asgdfsdfihsdf",
     "name": "Ryan Reynolds"
 }
 ```
