@@ -4,10 +4,12 @@ Description WIP
 
 ## Authentication
 
-The endpoints /api/isalive, /api/quote and /api/account are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
+The endpoints `/api/isalive`, `/api/quote` and `/api/account` are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
 
 Example:
 `Authorization: Secret as9-8dn8g08basnfd-asgdfsdfihsdf`
+
+If the authentication failed, the status code `401` will be returned with an appropriate error message.
 
 ## API
 
