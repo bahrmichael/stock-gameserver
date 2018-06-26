@@ -1,6 +1,5 @@
 package de.hackerstolz.stockgameserver.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -27,7 +26,7 @@ public class TransactionService {
     }
 
     public List<Transaction> getTransactions(final String userId) {
-        return new ArrayList<>();
+        return transactionRepository.findAllByUserId(userId).collect(Collectors.toList());
     }
 
     public List<Transaction> getTransactions(final String userId, final String symbol) {

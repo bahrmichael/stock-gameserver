@@ -32,7 +32,7 @@ public class OrderService {
         final Quote quote = quoteOptional.get();
         final Double price = quote.getLatestPrice();
 
-        if (order.isBuy()) {
+        if (order.getIsBuy()) {
             final double availableAmount = transactionService.getBalance(userId).getAmount();
             final double requiredAmount = price * order.getAmount();
             if (availableAmount < requiredAmount) {
@@ -45,6 +45,6 @@ public class OrderService {
             }
         }
 
-        return transactionService.createTransaction(userId, order.getSymbol(), order.getAmount(), order.isBuy(), price);
+        return transactionService.createTransaction(userId, order.getSymbol(), order.getAmount(), order.getIsBuy(), price);
     }
 }

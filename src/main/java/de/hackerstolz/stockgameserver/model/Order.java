@@ -13,11 +13,11 @@ public class Order {
         this.symbol = symbol;
     }
 
-    public Boolean isBuy() {
+    public Boolean getIsBuy() {
         return isBuy;
     }
 
-    public void setBuy(final Boolean buy) {
+    public void setIsBuy(final Boolean buy) {
         isBuy = buy;
     }
 
@@ -27,5 +27,14 @@ public class Order {
 
     public void setAmount(final Integer amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+               "symbol='" + symbol + '\'' +
+               ", isBuy=" + isBuy +
+               ", amount=" + amount +
+               '}';
     }
 }

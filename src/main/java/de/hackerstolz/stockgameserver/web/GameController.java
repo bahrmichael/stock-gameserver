@@ -74,7 +74,8 @@ public class GameController {
 
     @PostMapping("/order/{userId}")
     public ResponseEntity<?> placeOrder(@PathVariable final String userId, @RequestBody final Order order) {
-        if (order.isBuy() == null || order.getAmount() == null || order.getSymbol() == null) {
+        if (order.getIsBuy() == null || order.getAmount() == null || order.getSymbol() == null) {
+            System.out.println("Invalid order: " + order);
             return ResponseEntity.badRequest().build();
         }
 

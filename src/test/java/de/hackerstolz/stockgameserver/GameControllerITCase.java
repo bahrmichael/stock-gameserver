@@ -67,7 +67,7 @@ public class GameControllerITCase {
 
         final Order order = new Order();
         order.setAmount(1);
-        order.setBuy(true);
+        order.setIsBuy(true);
         order.setSymbol(symbol);
 
         final Transaction transaction = submitOrder(account, order);
