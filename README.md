@@ -2,6 +2,8 @@
 
 Description WIP
 
+Dividends are ignored.
+
 ## Authentication
 
 The endpoints `/api/isalive`, `/api/quote` and `/api/account` are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
