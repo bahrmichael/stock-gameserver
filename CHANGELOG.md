@@ -13,3 +13,4 @@ All routes were extended with the `v1` version to enable later versioning of rou
 * `/api/v1/transactions/{userId`
 * `/api/v1/transactions/{userId}/{symbol}`
 * `/api/v1/order/{userId}`
+* `/api/v1/analyses`

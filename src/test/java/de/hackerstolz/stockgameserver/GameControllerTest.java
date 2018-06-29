@@ -16,7 +16,7 @@ import de.hackerstolz.stockgameserver.service.QuoteService;
 public class GameControllerTest {
 
     private final QuoteService service = mock(QuoteService.class);
-    private final GameController sut = new GameController(service, null, null, null);
+    private final GameController sut = new GameController(service, null, null, null, null);
 
     @Test
     public void isAlive() {

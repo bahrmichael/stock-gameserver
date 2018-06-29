@@ -6,7 +6,7 @@ Data provided for free by [IEX](https://iextrading.com/developer). View [IEX’s
 
 ## Authentication
 
-The endpoints `/api/v1/isalive`, `/api/v1/quote` and `/api/v1/account` are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
+The endpoints without a userId path parameter are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
 
 Example:
 `Authorization: Secret as9-8dn8g08basnfd-asgdfsdfihsdf`
@@ -15,7 +15,7 @@ If the authentication failed, the status code `401` will be returned with an app
 
 ## API
 
-The api uses the `/api/vX` versioning schema where `X` is a number. New endpoints, deprecations and removals will be announced/scheduled through the CHANGELOG.md file.
+The api uses the `/api/vX` versioning schema where `X` is a number. New versions will be created for breaking changes. New endpoints, deprecations and removals will be announced/scheduled through the CHANGELOG.md file.
 There is also a `X-STOCKS-DEPRECATION: Date` header which contains the date on which the endpoint will be removed.
 
 All endpoints return json.
@@ -149,3 +149,22 @@ Error messages are provided in the body.
 
 `404`: The symbol <symbol> could not be found. If it's not a typo, then please report this to the admin.
 
+### GET /api/v1/analyses
+
+Returns a list of analyses as seen on [finanzen.net](https://www.finanzen.net/analysen/) if that stock has a symbol (open a report and look under the headline).
+
+`v1` returns all analyses that were tracked since the app's go-live. Futures versions may have date filters.
+
+Example Response:
+```json
+[
+    {
+        "symbol": "NKE",
+        "buy": 14,
+        "hold": 7,
+        "sell": 1,
+        "source": "https://www.finanzen.net/analyse/Nike_buy-Stifel_Nicolaus__Co__Inc__647337",
+        "instant": Date
+    }, ...
+]
+```

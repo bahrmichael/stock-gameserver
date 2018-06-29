@@ -19,10 +19,12 @@ import de.hackerstolz.stockgameserver.model.Account;
 import de.hackerstolz.stockgameserver.model.Balance;
 import de.hackerstolz.stockgameserver.model.Order;
 import de.hackerstolz.stockgameserver.model.Quote;
+import de.hackerstolz.stockgameserver.model.Recommendation;
 import de.hackerstolz.stockgameserver.model.Transaction;
 import de.hackerstolz.stockgameserver.service.AccountService;
 import de.hackerstolz.stockgameserver.service.OrderService;
 import de.hackerstolz.stockgameserver.service.QuoteService;
+import de.hackerstolz.stockgameserver.service.RecommendationService;
 import de.hackerstolz.stockgameserver.service.TransactionService;
 
 @RestController
@@ -35,14 +37,17 @@ public class GameController {
     private final TransactionService transactionService;
     private final AccountService accountService;
     private final OrderService orderService;
+    private final RecommendationService recommendationService;
 
     public GameController(final QuoteService quoteService,
             final TransactionService transactionService,
-            final AccountService accountService, final OrderService orderService) {
+            final AccountService accountService, final OrderService orderService,
+            final RecommendationService recommendationService) {
         this.quoteService = quoteService;
         this.transactionService = transactionService;
         this.accountService = accountService;
         this.orderService = orderService;
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/v1/isalive")
@@ -95,6 +100,11 @@ public class GameController {
             return ResponseEntity.status(400).body(
                     "Insufficient Shares. For the given symbol you only have " + e.getAvailableShares() + " shares");
         }
+    }
+
+    @GetMapping("/v1/analyses")
+    public List<Recommendation> getRecommendations() {
+        return recommendationService.findAll();
     }
 
     private ResponseEntity<Quote> notFound() {

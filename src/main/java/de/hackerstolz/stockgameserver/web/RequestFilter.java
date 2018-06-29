@@ -44,6 +44,7 @@ public class RequestFilter implements Filter {
         if (servletPath.startsWith("/api")
             && !servletPath.startsWith("/api/v1/isalive")
             && !servletPath.startsWith("/api/v1/quote")
+            && !servletPath.startsWith("/api/v1/analyses")
             && !servletPath.startsWith("/api/v1/account")) {
 
             deny = shouldDeny(req, res, servletPath);
