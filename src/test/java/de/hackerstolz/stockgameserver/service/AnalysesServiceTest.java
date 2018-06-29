@@ -11,15 +11,15 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import de.hackerstolz.stockgameserver.model.Recommendation;
+import de.hackerstolz.stockgameserver.model.Analysis;
 
-public class RecommendationServiceTest {
+public class AnalysesServiceTest {
 
     private RestTemplate restTemplate = mock(RestTemplate.class);
-    private RecommendationService sut = new RecommendationService(restTemplate, null);
+    private AnalysesService sut = new AnalysesService(restTemplate, null);
 
     @Test
-    public void getRecommendationFromLink() {
+    public void getAnalysesFromLink() {
         final String link = "aLink";
         when(restTemplate.getForObject(eq(link), eq(String.class), any(HashMap.class)))
                 .thenReturn(" <br /> Symbol: GOOGL</span></h2><div class><span class=\"backgroundGreenWhite "
@@ -29,23 +29,23 @@ public class RecommendationServiceTest {
                             + "0</div></div></div><div class=\"courseAimLineBox clearfix\"><div "
                             + "class=\"courseAimLine\"></div><div class=\"courseAimLabel\" s");
 
-        final Recommendation recommendation = sut.getRecommendationFromLink(link);
+        final Analysis result = sut.getAnalysisFromLink(link);
 
-        assertEquals(14, recommendation.getBuy());
-        assertEquals(0, recommendation.getSell());
-        assertEquals(3, recommendation.getHold());
-        assertEquals(link, recommendation.getSource());
-        assertEquals("GOOGL", recommendation.getSymbol());
+        assertEquals(14, result.getBuy());
+        assertEquals(0, result.getSell());
+        assertEquals(3, result.getHold());
+        assertEquals(link, result.getSource());
+        assertEquals("GOOGL", result.getSymbol());
     }
 
     @Test
-    public void getRecommendationLinks() {
+    public void getAnalysesLinks() {
         when(restTemplate.getForObject(any(String.class), eq(String.class), any(HashMap.class)))
                 .thenReturn("<rss version=\"2.0\"><channel><item><link>mylink</link></item></channel></rss>");
 
-        final List<String> recommendation = sut.getRecommendationLinks();
+        final List<String> result = sut.getAnalysisLinks();
 
-        assertEquals(1, recommendation.size());
-        assertEquals("mylink", recommendation.get(0));
+        assertEquals(1, result.size());
+        assertEquals("mylink", result.get(0));
     }
 }

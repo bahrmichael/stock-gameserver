@@ -2,7 +2,7 @@ package de.hackerstolz.stockgameserver.model;
 
 import java.time.Instant;
 
-public class Recommendation {
+public class Analysis {
 
     private String symbol;
     private int buy;
@@ -11,10 +11,10 @@ public class Recommendation {
     private String source;
     private Instant instant;
 
-    public Recommendation() {
+    public Analysis() {
     }
 
-    public Recommendation(final String symbol, final int buy, final int hold, final int sell, final String source) {
+    public Analysis(final String symbol, final int buy, final int hold, final int sell, final String source) {
         this.symbol = symbol;
         this.buy = buy;
         this.hold = hold;
@@ -73,7 +73,7 @@ public class Recommendation {
 
     @Override
     public String toString() {
-        return "Recommendation{" +
+        return "Analysis{" +
                "symbol='" + symbol + '\'' +
                ", buy=" + buy +
                ", hold=" + hold +

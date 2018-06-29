@@ -16,49 +16,49 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import de.hackerstolz.stockgameserver.repositories.RecommendationRepository;
+import de.hackerstolz.stockgameserver.model.Analysis;
+import de.hackerstolz.stockgameserver.repositories.AnalysesRepository;
 import de.hackerstolz.stockgameserver.model.AnalysisItem;
-import de.hackerstolz.stockgameserver.model.Recommendation;
 import de.hackerstolz.stockgameserver.model.RssAnalysis;
 
 @Service
-public class RecommendationService {
+public class AnalysesService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final RestTemplate restTemplate;
-    private final RecommendationRepository repository;
+    private final AnalysesRepository repository;
 
-    public RecommendationService(final RestTemplate restTemplate,
-            final RecommendationRepository repository) {
+    public AnalysesService(final RestTemplate restTemplate,
+            final AnalysesRepository repository) {
         this.restTemplate = restTemplate;
         this.repository = repository;
     }
 
     @Async
     @Scheduled(fixedDelay = 60_000L)
-    public void loadRecommendations() {
-        log.info("Loading recommendations.");
-        getRecommendationLinks().forEach(link -> {
+    public void loadAnalyses() {
+        log.info("Loading analyses.");
+        getAnalysisLinks().forEach(link -> {
             if (repository.countBySource(link) == 0) {
-                log.info("Loading new recommendation from {}", link);
-                final Recommendation recommendation = getRecommendationFromLink(link);
-                if (recommendation.getSymbol() != null) {
-                    log.info("Storing new recommendation: {}", recommendation);
-                    repository.save(recommendation);
+                log.info("Loading new analysis from {}", link);
+                final Analysis analysis = getAnalysisFromLink(link);
+                if (analysis.getSymbol() != null) {
+                    log.info("Storing new analysis: {}", analysis);
+                    repository.save(analysis);
                 }
             }
         });
     }
 
-    List<String> getRecommendationLinks() {
+    List<String> getAnalysisLinks() {
         final String forObject = restTemplate.getForObject("https://www.finanzen.net/rss/analysen",
                                                            String.class, new HashMap<>());
         final RssAnalysis result = JAXB.unmarshal(new StringReader(forObject), RssAnalysis.class);
         return result.getRssChannel().getItem().stream().map(AnalysisItem::getLink).collect(Collectors.toList());
     }
 
-    Recommendation getRecommendationFromLink(final String link) {
+    Analysis getAnalysisFromLink(final String link) {
         final String result = restTemplate.getForObject(link, String.class, new HashMap<>());
 
         final int buy = extractNumber("Buy", result);
@@ -66,7 +66,7 @@ public class RecommendationService {
         final int hold = extractNumber("Hold", result);
         final String symbol = extract(" Symbol", result);
 
-        return new Recommendation(symbol, buy, hold, sell, link);
+        return new Analysis(symbol, buy, hold, sell, link);
     }
 
     private int extractNumber(final String type, final String input) {
@@ -89,7 +89,7 @@ public class RecommendationService {
         return null;
     }
 
-    public List<Recommendation> findAll() {
+    public List<Analysis> findAll() {
         return repository.findAll();
     }
 }

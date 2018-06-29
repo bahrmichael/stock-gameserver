@@ -16,15 +16,15 @@ import de.hackerstolz.stockgameserver.exception.InsufficientFundsException;
 import de.hackerstolz.stockgameserver.exception.InsufficientSharesException;
 import de.hackerstolz.stockgameserver.exception.StockNotFoundException;
 import de.hackerstolz.stockgameserver.model.Account;
+import de.hackerstolz.stockgameserver.model.Analysis;
 import de.hackerstolz.stockgameserver.model.Balance;
 import de.hackerstolz.stockgameserver.model.Order;
 import de.hackerstolz.stockgameserver.model.Quote;
-import de.hackerstolz.stockgameserver.model.Recommendation;
 import de.hackerstolz.stockgameserver.model.Transaction;
 import de.hackerstolz.stockgameserver.service.AccountService;
 import de.hackerstolz.stockgameserver.service.OrderService;
 import de.hackerstolz.stockgameserver.service.QuoteService;
-import de.hackerstolz.stockgameserver.service.RecommendationService;
+import de.hackerstolz.stockgameserver.service.AnalysesService;
 import de.hackerstolz.stockgameserver.service.TransactionService;
 
 @RestController
@@ -37,17 +37,17 @@ public class GameController {
     private final TransactionService transactionService;
     private final AccountService accountService;
     private final OrderService orderService;
-    private final RecommendationService recommendationService;
+    private final AnalysesService analysesService;
 
     public GameController(final QuoteService quoteService,
             final TransactionService transactionService,
             final AccountService accountService, final OrderService orderService,
-            final RecommendationService recommendationService) {
+            final AnalysesService analysesService) {
         this.quoteService = quoteService;
         this.transactionService = transactionService;
         this.accountService = accountService;
         this.orderService = orderService;
-        this.recommendationService = recommendationService;
+        this.analysesService = analysesService;
     }
 
     @GetMapping("/v1/isalive")
@@ -103,8 +103,8 @@ public class GameController {
     }
 
     @GetMapping("/v1/analyses")
-    public List<Recommendation> getRecommendations() {
-        return recommendationService.findAll();
+    public List<Analysis> getAnalyses() {
+        return analysesService.findAll();
     }
 
     private ResponseEntity<Quote> notFound() {
