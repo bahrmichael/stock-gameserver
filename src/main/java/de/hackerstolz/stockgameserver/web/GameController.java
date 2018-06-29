@@ -2,6 +2,8 @@ package de.hackerstolz.stockgameserver.web;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,8 @@ import de.hackerstolz.stockgameserver.service.TransactionService;
 @RequestMapping("/api")
 public class GameController {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private final QuoteService quoteService;
     private final TransactionService transactionService;
     private final AccountService accountService;
@@ -41,53 +45,53 @@ public class GameController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/isalive")
+    @GetMapping("/v1/isalive")
     public ResponseEntity<Void> isAlive() {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/quote/{symbol}")
+    @GetMapping("/v1/quote/{symbol}")
     public ResponseEntity<Quote> getQuote(@PathVariable final String symbol) {
         return quoteService.getStockInfo(symbol).map(ResponseEntity::ok).orElseGet(this::notFound);
     }
 
     // name is not unique, feel free to create multiple accounts and trade on them
-    @PostMapping("/account/{name}")
+    @PostMapping("/v1/account/{name}")
     public ResponseEntity<Account> createAccount(@PathVariable final String name) {
         return ResponseEntity.ok(accountService.createNewAccount(name));
     }
 
-    @GetMapping("/balance/{userId}")
+    @GetMapping("/v1/balance/{userId}")
     public ResponseEntity<Balance> getBalance(@PathVariable final String userId) {
         return ResponseEntity.ok(transactionService.getBalance(userId));
     }
 
-    @GetMapping("/transactions/{userId}")
+    @GetMapping("/v1/transactions/{userId}")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable final String userId) {
         return ResponseEntity.ok(transactionService.getTransactions(userId));
     }
 
-    @GetMapping("/transactions/{userId}/{symbol}")
+    @GetMapping("/v1/transactions/{userId}/{symbol}")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable final String userId, @PathVariable final String symbol) {
         return ResponseEntity.ok(transactionService.getTransactions(userId, symbol));
     }
 
-    @PostMapping("/order/{userId}")
+    @PostMapping("/v1/order/{userId}")
     public ResponseEntity<?> placeOrder(@PathVariable final String userId, @RequestBody final Order order) {
         if (order.getIsBuy() == null || order.getAmount() == null || order.getSymbol() == null) {
-            System.out.println("Invalid order: " + order);
+            log.info("Invalid order: {}", order);
             return ResponseEntity.badRequest().build();
         }
 
         try {
             return ResponseEntity.ok(orderService.placeOrder(order, userId));
-        } catch (StockNotFoundException e) {
+        } catch (final StockNotFoundException e) {
             return ResponseEntity.status(404).body("The symbol " + e.getSymbol() + " could not be found. If it's not a "
                                                    + "typo, then please report this to the admin.");
-        } catch (InsufficientFundsException e) {
+        } catch (final InsufficientFundsException e) {
             return ResponseEntity.status(400).body(
                     "Insufficient Funds. You don't have the required " + e.getRequiredAmount().intValue());
-        } catch (InsufficientSharesException e) {
+        } catch (final InsufficientSharesException e) {
             return ResponseEntity.status(400).body(
                     "Insufficient Shares. For the given symbol you only have " + e.getAvailableShares() + " shares");
         }

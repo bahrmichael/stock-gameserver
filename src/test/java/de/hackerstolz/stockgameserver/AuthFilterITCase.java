@@ -1,6 +1,5 @@
 package de.hackerstolz.stockgameserver;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 
 import de.hackerstolz.stockgameserver.model.Account;
 
-@Ignore // todo: add embedded mongodb for tests
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthFilterITCase {
@@ -27,25 +25,25 @@ public class AuthFilterITCase {
 
     @Test
     public void badUrl_returns404() {
-        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/transactions/", HttpMethod.GET, null, Void.class);
+        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/v1/transactions/", HttpMethod.GET, null, Void.class);
         assertEquals(HttpStatus.NOT_FOUND, orderResponse.getStatusCode());
     }
 
     @Test
     public void nonExistingUser_returns404() {
-        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/transactions/aUser", HttpMethod.GET, null, Void.class);
+        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/v1/transactions/aUser", HttpMethod.GET, null, Void.class);
         assertEquals(HttpStatus.NOT_FOUND, orderResponse.getStatusCode());
     }
 
     @Test
     public void badAuthentication_returns404() {
         final Account account = createAccount("Test");
-        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/transactions/" + account.getUserId(), HttpMethod.GET, authorizedRequest(account.getSecret() + "wrong"), Void.class);
+        final ResponseEntity<Void> orderResponse = restTemplate.exchange("/api/v1/transactions/" + account.getUserId(), HttpMethod.GET, authorizedRequest(account.getSecret() + "wrong"), Void.class);
         assertEquals(HttpStatus.UNAUTHORIZED, orderResponse.getStatusCode());
     }
 
     private Account createAccount(final String name) {
-        final ResponseEntity<Account> response = restTemplate.exchange("/api/account/" + name, HttpMethod.POST, emptyRequest(), Account.class);
+        final ResponseEntity<Account> response = restTemplate.exchange("/api/v1/account/" + name, HttpMethod.POST, emptyRequest(), Account.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();
     }

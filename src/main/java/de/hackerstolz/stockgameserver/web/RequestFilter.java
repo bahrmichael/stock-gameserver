@@ -11,6 +11,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ import de.hackerstolz.stockgameserver.service.AccountService;
 @Component
 @Order(1)
 public class RequestFilter implements Filter {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final AccountService accountService;
 
@@ -33,12 +37,14 @@ public class RequestFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
-        boolean deny = false;
         final String servletPath = req.getServletPath();
+        log.info("{} {} was invoked.", req.getMethod(), servletPath);
+
+        boolean deny = false;
         if (servletPath.startsWith("/api")
-            && !servletPath.startsWith("/api/isalive")
-            && !servletPath.startsWith("/api/quote")
-            && !servletPath.startsWith("/api/account")) {
+            && !servletPath.startsWith("/api/v1/isalive")
+            && !servletPath.startsWith("/api/v1/quote")
+            && !servletPath.startsWith("/api/v1/account")) {
 
             deny = shouldDeny(req, res, servletPath);
         }
@@ -51,12 +57,12 @@ public class RequestFilter implements Filter {
     private boolean shouldDeny(final HttpServletRequest req, final HttpServletResponse res, final String servletPath) {
         // do filter
         final String[] split = servletPath.split("/");
-        if (split.length < 4) {
+        if (split.length < 5) {
             write(res,"The requested endpoint could not be found.");
             res.setStatus(404);
             return true;
         }
-        final String userId = split[3];
+        final String userId = split[4];
         final Account account = accountService.getAccount(userId);
         if (null == account) {
             write(res,"The user could not be found.");
@@ -90,8 +96,8 @@ public class RequestFilter implements Filter {
     private void write(final HttpServletResponse res, final String text) {
         try {
             res.getWriter().append(text);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            log.error("Failed to write response", e);
         }
     }
 

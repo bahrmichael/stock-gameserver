@@ -1,12 +1,12 @@
 # Stock Gameserver
 
-Description WIP
-
 Dividends are ignored.
+
+Data provided for free by [IEX](https://iextrading.com/developer). View [IEX’s Terms of Use](https://iextrading.com/api-exhibit-a/).
 
 ## Authentication
 
-The endpoints `/api/isalive`, `/api/quote` and `/api/account` are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
+The endpoints `/api/v1/isalive`, `/api/v1/quote` and `/api/v1/account` are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
 
 Example:
 `Authorization: Secret as9-8dn8g08basnfd-asgdfsdfihsdf`
@@ -15,11 +15,16 @@ If the authentication failed, the status code `401` will be returned with an app
 
 ## API
 
-### GET /api/isalive
+The api uses the `/api/vX` versioning schema where `X` is a number. New endpoints, deprecations and removals will be announced/scheduled through the CHANGELOG.md file.
+There is also a `X-STOCKS-DEPRECATION: Date` header which contains the date on which the endpoint will be removed.
+
+All endpoints return json.
+
+### GET /api/v1/isalive
 
 Returns a 200 if alive.
 
-### GET /api/quote/{symbol}
+### GET /api/v1/quote/{symbol}
 
 Returns a quote for the given symbol if the according information could be retrieved. All stocks from https://iextrading.com/apps/stocks are supported, feel free to use their API for your purposes.
 
@@ -31,7 +36,7 @@ Example:
 }
 ```
 
-### POST /api/account/{name}
+### POST /api/v1/account/{name}
 
 Create an account with the given name and an initial balance of 10000. Please use your real name. Names are not unique, so you can create as many accounts as you want.
 
@@ -48,7 +53,7 @@ Example:
 }
 ```
 
-### GET /api/balance/{userId}
+### GET /api/v1/balance/{userId}
 
 Requires authentication, see chapter on Authentication.
 
@@ -62,7 +67,7 @@ Example:
 }
 ```
 
-### GET /api/transactions/{userId}
+### GET /api/v1/transactions/{userId}
 
 Requires authentication, see chapter on Authentication.
 
@@ -83,7 +88,7 @@ Example:
 ]
 ```
 
-### GET /api/transactions/{userId}/{symbol}
+### GET /api/v1/transactions/{userId}/{symbol}
 
 Requires authentication, see chapter on Authentication.
 
@@ -104,7 +109,7 @@ Example:
 ]
 ```
 
-### POST /api/order/{userId}
+### POST /api/v1/order/{userId}
 
 Requires authentication, see chapter on Authentication.
 
