@@ -1,14 +1,9 @@
 package de.hackerstolz.stockgameserver.service;
 
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.xml.bind.JAXB;
-
+import de.hackerstolz.stockgameserver.model.Analysis;
+import de.hackerstolz.stockgameserver.model.AnalysisItem;
+import de.hackerstolz.stockgameserver.model.RssAnalysis;
+import de.hackerstolz.stockgameserver.repositories.AnalysesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -16,10 +11,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import de.hackerstolz.stockgameserver.model.Analysis;
-import de.hackerstolz.stockgameserver.repositories.AnalysesRepository;
-import de.hackerstolz.stockgameserver.model.AnalysisItem;
-import de.hackerstolz.stockgameserver.model.RssAnalysis;
+import javax.xml.bind.JAXB;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class AnalysesService {
@@ -91,5 +89,9 @@ public class AnalysesService {
 
     public List<Analysis> findAll() {
         return repository.findAll();
+    }
+
+    public long count() {
+        return repository.count();
     }
 }
