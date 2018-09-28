@@ -6,12 +6,22 @@ Data provided for free by [IEX](https://iextrading.com/developer). View [IEX’s
 
 ## Authentication
 
-The endpoints without a userId path parameter are not secured. All others require the userId in the path, as well as the secret via the Authorization header.
+To authenticate requests, you must first create an account at the `/api/v1/account` endpoint. You can create as many accounts as you want to.
 
-Example:
-`Authorization: Secret as9-8dn8g08basnfd-asgdfsdfihsdf`
+Authorization HTTP header example:
+* `Authorization: Basic M3JkcGFydHlfY2xpZW50aWQ6amtmb3B3a21pZjkwZTB3b21rZXBvd2U5aXJram8zcDlta2Z3ZQ==`
 
-If the authentication failed, the status code `401` will be returned with an appropriate error message.
+Basic access authentication is used, with the user ID as the username and secret as the password. The header should be the string `Basic ` plus the Base64 encoded string {user_id}:{secret}.
+It is very important to make sure there is no whitespace around or in the string that is being Base64 encoded. If in doubt, try to Base64 encode the sample values provided below and compare them to the results:
+* Example user ID: `3rdparty_clientid`
+* Example secret: `jkfopwkmif90e0womkepowe9irkjo3p9mkfwe`
+* Concatenated to become: `3rdparty_clientid:jkfopwkmif90e0womkepowe9irkjo3p9mkfwe`
+* Base64 encoded to: `M3JkcGFydHlfY2xpZW50aWQ6amtmb3B3a21pZjkwZTB3b21rZXBvd2U5aXJram8zcDlta2Z3ZQ==`
+* Resulting in the Authorization header: `Basic M3JkcGFydHlfY2xpZW50aWQ6amtmb3B3a21pZjkwZTB3b21rZXBvd2U5aXJram8zcDlta2Z3ZQ==`
+
+Endpoints which require authentication are marked as such in the description below.
+
+If the authentication failed, the status code `401` will be returned.
 
 ## API
 
@@ -53,9 +63,11 @@ Example:
 }
 ```
 
-### GET /api/v1/balance/{userId}
+_If you lose those credentials, then there is no way to retrieve them._
 
-Requires authentication, see chapter on Authentication.
+### GET /api/v1/balance/
+
+**Requires authentication**, see chapter on Authentication.
 
 Returns your balance.
 
@@ -67,9 +79,9 @@ Example:
 }
 ```
 
-### GET /api/v1/transactions/{userId}
+### GET /api/v1/transactions/
 
-Requires authentication, see chapter on Authentication.
+**Requires authentication**, see chapter on Authentication.
 
 Returns a list of all your transactions. Transactions are comleted buy or sell orders.
 
@@ -88,9 +100,9 @@ Example:
 ]
 ```
 
-### GET /api/v1/transactions/{userId}/{symbol}
+### GET /api/v1/transactions/{symbol}
 
-Requires authentication, see chapter on Authentication.
+**Requires authentication**, see chapter on Authentication.
 
 Same as above, but filtered by symbol.
 
@@ -109,9 +121,9 @@ Example:
 ]
 ```
 
-### POST /api/v1/order/{userId}
+### POST /api/v1/order/
 
-Requires authentication, see chapter on Authentication.
+**Requires authentication**, see chapter on Authentication.
 
 An order may either succeed and result in a transaction or fail with an error code and an error message. Contrary to stock exchanges, orders are processed immediately and have no delayable aspect.
 
