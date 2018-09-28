@@ -1,3 +1,8 @@
+jdk:
+- oraclejdk10
+- oraclejdk-ea
+- openjdk10
+- openjdk11
 language: java
 script:
 - mvn clean package #-Pprod
