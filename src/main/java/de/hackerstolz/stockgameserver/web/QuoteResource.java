@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/quote")
+@RequestMapping("/api/v1/quote/")
 public class QuoteResource {
 
     private final QuoteService quoteService;
@@ -18,7 +18,7 @@ public class QuoteResource {
         this.quoteService = quoteService;
     }
 
-    @GetMapping("/{symbol}")
+    @GetMapping("{symbol}/")
     public ResponseEntity<Quote> getQuote(@PathVariable final String symbol) {
         return quoteService.getStockInfo(symbol).map(ResponseEntity::ok).orElseGet(this::notFound);
     }

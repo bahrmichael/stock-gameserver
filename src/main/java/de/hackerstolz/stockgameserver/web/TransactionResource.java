@@ -27,7 +27,7 @@ public class TransactionResource {
         return ResponseEntity.ok(transactionService.getTransactions(userId));
     }
 
-    @GetMapping("/{symbol}")
+    @GetMapping("{symbol}/")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable final String symbol) {
         final String userId = SecurityUtils.getCurrentUserLoginAsString();
         return ResponseEntity.ok(transactionService.getTransactions(userId, symbol));

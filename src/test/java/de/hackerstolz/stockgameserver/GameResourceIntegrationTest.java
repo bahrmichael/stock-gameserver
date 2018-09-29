@@ -35,7 +35,7 @@ public class GameResourceIntegrationTest {
 
     @Test
     public void isAlive() {
-        final ResponseEntity<Void> response = restTemplate.exchange("/isalive", HttpMethod.GET, emptyRequest(), Void.class);
+        final ResponseEntity<Void> response = restTemplate.exchange("/isalive/", HttpMethod.GET, emptyRequest(), Void.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -114,7 +114,7 @@ public class GameResourceIntegrationTest {
     }
 
     private List<Transaction> loadTransactions(Account account, String symbol) {
-        final ResponseEntity<Transaction[]> response = restTemplate.exchange("/api/v1/transactions/" + symbol,
+        final ResponseEntity<Transaction[]> response = restTemplate.exchange("/api/v1/transactions/" + symbol + "/",
                 HttpMethod.GET, authorizedRequest(account.getUserId(), account.getSecret()),
                 Transaction[].class);
 
@@ -140,7 +140,7 @@ public class GameResourceIntegrationTest {
     }
 
     private Quote getQuote(final String symbol) {
-        final ResponseEntity<Quote> response = restTemplate.exchange("/api/v1/quote/" + symbol, HttpMethod.GET, emptyRequest(), Quote.class);
+        final ResponseEntity<Quote> response = restTemplate.exchange("/api/v1/quote/" + symbol + "/", HttpMethod.GET, emptyRequest(), Quote.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();
     }
@@ -155,7 +155,7 @@ public class GameResourceIntegrationTest {
     }
 
     private Account createAccount(final String name) {
-        final ResponseEntity<Account> response = restTemplate.exchange("/api/v1/account/" + name, HttpMethod.POST, emptyRequest(), Account.class);
+        final ResponseEntity<Account> response = restTemplate.exchange("/api/v1/account/" + name + "/", HttpMethod.POST, emptyRequest(), Account.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         return response.getBody();
     }

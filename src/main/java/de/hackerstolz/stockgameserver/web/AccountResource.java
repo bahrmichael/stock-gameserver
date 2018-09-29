@@ -19,7 +19,7 @@ public class AccountResource {
     }
 
     // name is not unique, feel free to create multiple accounts and trade on them
-    @PostMapping("/{name}")
+    @PostMapping("{name}/")
     public ResponseEntity<Account> createAccount(@PathVariable final String name) {
         return ResponseEntity.ok(accountService.createNewAccount(name));
     }

@@ -30,11 +30,11 @@ There is also a `X-STOCKS-DEPRECATION: Date` header which contains the date on w
 
 All endpoints return json.
 
-### GET /api/v1/isalive
+### GET /isalive/
 
 Returns a 200 if alive.
 
-### GET /api/v1/quote/{symbol}
+### GET /api/v1/quote/{symbol}/
 
 Returns a quote for the given symbol if the according information could be retrieved. All stocks from https://iextrading.com/apps/stocks are supported, feel free to use their API for your purposes.
 
@@ -46,7 +46,7 @@ Example:
 }
 ```
 
-### POST /api/v1/account/{name}
+### POST /api/v1/account/{name}/
 
 Create an account with the given name and an initial balance of 10000. Please use your real name. Names are not unique, so you can create as many accounts as you want.
 
@@ -100,7 +100,7 @@ Example:
 ]
 ```
 
-### GET /api/v1/transactions/{symbol}
+### GET /api/v1/transactions/{symbol}/
 
 **Requires authentication**, see chapter on Authentication.
 
@@ -161,7 +161,7 @@ Error messages are provided in the body.
 
 `404`: The symbol <symbol> could not be found. If it's not a typo, then please report this to the admin.
 
-### GET /api/v1/analyses
+### GET /api/v1/analyses/
 
 Returns a list of analyses as seen on [finanzen.net](https://www.finanzen.net/analysen/) if that stock has a symbol (open a report and look under the headline).
 
