@@ -59,7 +59,7 @@ Example:
 {
     "userId": "97asndyf9-sa90d7fnsad",
     "secret": "as9-8dn8g08basnfd-asgdfsdfihsdf",
-    "name": "Ryan Reynolds"
+    "name": "Michael Bahr"
 }
 ```
 
@@ -95,7 +95,7 @@ Example:
         "amount": 10,
         "symbol": "AAPL",
         "isBuy": true,
-        "instant": Date
+        "instant": "2018-09-28T19:16:07.496Z"
     }, ...
 ]
 ```
@@ -116,7 +116,7 @@ Example:
         "amount": 10,
         "symbol": "AAPL",
         "isBuy": true,
-        "instant": Date
+        "instant": "2018-09-28T19:16:07.496Z"
     }, ...
 ]
 ```
@@ -145,7 +145,7 @@ Example Response:
     "amount": 10,
     "symbol": "AAPL",
     "isBuy": true,
-    "instant": Date
+    "instant": "2018-09-28T19:16:07.496Z"
 }
 ```
 
@@ -176,7 +176,7 @@ Example Response:
         "hold": 7,
         "sell": 1,
         "source": "https://www.finanzen.net/analyse/Nike_buy-Stifel_Nicolaus__Co__Inc__647337",
-        "instant": Date
+        "instant": "2018-09-28T19:16:07.496Z"
     }, ...
 ]
 ```
